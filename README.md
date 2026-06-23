@@ -2,6 +2,8 @@
 
 A SOC-style threat-hunting tool that takes an IOC (IP address, domain, or file hash), enriches it with **threat intelligence (VirusTotal)**, **geolocation (GeoIP)**, and **MITRE ATT&CK technique mapping**, then generates a downloadable **PDF incident report** — all from a single dark-themed dashboard.
 
+![Dashboard Screenshot](screenshots/dashboard-screenshot.png)
+
 ![status](https://img.shields.io/badge/status-active-brightgreen) ![python](https://img.shields.io/badge/python-3.10%2B-blue) ![flask](https://img.shields.io/badge/flask-3.0-black)
 
 ## Features
