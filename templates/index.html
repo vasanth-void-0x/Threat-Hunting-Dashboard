@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Threat Hunting Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">V</span>
+      <span class="brand-text">GLOBAL THREAT HUNTING <span class="accent">DASHBOARD</span></span>
+      <span class="ops-tag">| OPERATIONS CENTER</span>
+    </div>
+    <div class="topbar-right">
+      <span class="live-dot"></span> LIVE MONITORING <span id="clock"></span>
+    </div>
+  </header>
+
+  <section class="stats-row" id="statsRow">
+    <div class="stat-card">
+      <div class="stat-label">Total Investigations</div>
+      <div class="stat-value" id="statTotal">0</div>
+    </div>
+    <div class="stat-card malicious">
+      <div class="stat-label">Malicious</div>
+      <div class="stat-value" id="statMalicious">0</div>
+    </div>
+    <div class="stat-card suspicious">
+      <div class="stat-label">Suspicious</div>
+      <div class="stat-value" id="statSuspicious">0</div>
+    </div>
+    <div class="stat-card clean">
+      <div class="stat-label">Clean</div>
+      <div class="stat-value" id="statClean">0</div>
+    </div>
+  </section>
+
+  <section class="ops-grid">
+
+    <!-- LEFT COLUMN -->
+    <div class="ops-col left-col">
+      <div class="panel chart-panel">
+        <div class="panel-title">Threat Hunting Analytics</div>
+        <canvas id="analyticsChart"></canvas>
+      </div>
+
+      <div class="panel scroll-panel">
+        <div class="panel-title">Source &rarr; Destination</div>
+        <table class="mini-table">
+          <thead><tr><th>Source</th><th>Destination</th><th>Proto</th></tr></thead>
+          <tbody id="srcDestBody"></tbody>
+        </table>
+      </div>
+
+      <div class="panel form-panel">
+        <div class="panel-title">Analyze IOC</div>
+        <form id="analyzeForm">
+          <input type="text" id="iocInput" placeholder="e.g. 185.220.101.5" required>
+          <select id="iocType">
+            <option value="ip">IP Address</option>
+            <option value="domain">Domain</option>
+            <option value="hash">File Hash</option>
+          </select>
+          <button type="submit" id="analyzeBtn">ANALYZE</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- CENTER COLUMN -->
+    <div class="ops-col center-col">
+      <div class="panel map-panel">
+        <div class="panel-title">Live Threat Activity</div>
+        <div class="map-wrap" id="mapWrap">
+          <div class="map-loading" id="mapLoading">LOADING WORLD MAP DATA...</div>
+        </div>
+
+        <div class="terminal-overlay" id="terminalOverlay">
+          <div class="terminal-header">
+            <span>LIVE PACKET CAPTURE</span>
+            <span class="terminal-close" id="terminalClose">&times;</span>
+          </div>
+          <div class="terminal-body" id="terminalBody"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="ops-col right-col">
+      <div class="panel scroll-panel">
+        <div class="panel-title">System Alerts</div>
+        <table class="mini-table">
+          <thead><tr><th>Time</th><th>Source</th><th>Destination</th></tr></thead>
+          <tbody id="alertsBody"></tbody>
+        </table>
+      </div>
+
+      <div class="panel scroll-panel ioc-feed-panel">
+        <div class="panel-title">IOC Feed</div>
+        <table class="mini-table">
+          <thead><tr><th>IOC</th><th>Verdict</th><th>Type</th><th>Report</th></tr></thead>
+          <tbody id="iocFeedBody"></tbody>
+        </table>
+      </div>
+
+      <div class="panel chart-panel">
+        <div class="panel-title">Attack Types</div>
+        <canvas id="attackTypesChart"></canvas>
+      </div>
+
+      <div class="panel chart-panel">
+        <div class="panel-title">Network Traffic Volume</div>
+        <canvas id="trafficChart"></canvas>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
+
